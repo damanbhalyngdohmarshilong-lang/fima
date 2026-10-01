@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shopping Cart - Fima</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        header {
+            background-color: #111;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .cart {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .cart h2 {
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-info h3 {
+            margin: 0 0 10px;
+        }
+
+        .price {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .quantity-controls button {
+            width: 30px;
+            height: 30px;
+            background-color: #111;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .quantity-controls button:hover {
+            background-color: #444;
+        }
+
+        .quantity-number {
+            font-weight: bold;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .remove {
+            color: #d00;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .item-total {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .grand-total {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .buttons {
+            margin-top: 25px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-right: 15px;
+            padding: 12px 20px;
+            background-color: #111;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back:hover {
+            background-color: #444;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+        }
+
+        @media (max-width: 600px) {
+
+            .cart {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .cart-item {
+                flex-wrap: wrap;
+            }
+
+            .item-total {
+                width: 100%;
+                text-align: right;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>Fima Shopping Cart</h1>
+
+</header>
+
+
+<div class="cart">
+
+    <h2>Your Cart</h2>
+
+    <div id="cart-container"></div>
+
+</div>
+
+
+<script>
+
+
+/*
+ * PRODUCT INFORMATION
+ */
+
+const products = {
+
+    1: {
+        name: "Product 1",
+        price: 500,
+        image: "images/product1.jpg"
+    },
+
+    2: {
+        name: "Product 2",
+        price: 750,
+        image: "images/product2.jpg"
+    },
+
+    3: {
+        name: "Product 3",
+        price: 1000,
+        image: "images/product3.jpg"
+    },
+
+    4: {
+        name: "Product 4",
+        price: 600,
+        image: "images/product4.jpg"
+    },
+
+    5: {
+        name: "Product 5",
+        price: 850,
+        image: "images/product5.jpg"
+    },
+
+    6: {
+        name: "Product 6",
+        price: 900,
+        image: "images/product6.jpg"
+    },
+
+    7: {
+        name: "Product 7",
+        price: 1200,
+        image: "images/product7.jpg"
+    }
+
+};
+
+
+
+/*
+ * GET CART
+ */
+
+function getCart() {
+
+    return JSON.parse(
+        localStorage.getItem("fimaCart")
+    ) || {};
+
+}
+
+
+
+/*
+ * SAVE CART
+ */
+
+function saveCart(cart) {
+
+    localStorage.setItem(
+        "fimaCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+
+/*
+ * INCREASE QUANTITY
+ */
+
+function increase(id) {
+
+    const cart = getCart();
+
+    cart[id] = (cart[id] || 0) + 1;
+
+    saveCart(cart);
+
+    displayCart();
+
+}
+
+
+
+/*
+ * DECREASE QUANTITY
+ */
+
+function decrease(id) {
+
+    const cart = getCart();
+
+    if (cart[id]) {
+
+        cart[id]--;
+
+        if (cart[id] <= 0) {
+
+            delete cart[id];
+
+        }
+
+    }
+
+    saveCart(cart);
+
+    displayCart();
+
+}
+
+
+
+/*
+ * REMOVE PRODUCT
+ */
+
+function removeProduct(id) {
+
+    const cart = getCart();
+
+    delete cart[id];
+
+    saveCart(cart);
+
+    displayCart();
+
+}
+
+
+
+/*
+ * DISPLAY CART
+ */
+
+function displayCart() {
+
+    const cart = getCart();
+
+    const container =
+        document.getElementById("cart-container");
+
+    const ids = Object.keys(cart);
+
+
+    /*
+     * EMPTY CART
+     */
+
+    if (ids.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <p>
+                    Your cart is empty.
+                </p>
+
+                <a
+                    href="index.html"
+                    class="back"
+                >
+                    Continue Shopping
+                </a>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    let grandTotal = 0;
+
+    let html = "";
+
+
+    /*
+     * CREATE CART ITEMS
+     */
+
+    ids.forEach(id => {
+
+        const product = products[id];
+
+        if (!product) {
+            return;
+        }
+
+
+        const quantity = cart[id];
+
+        const itemTotal =
+            product.price * quantity;
+
+
+        grandTotal += itemTotal;
+
+
+        html += `
+
+            <div class="cart-item">
+
+                <img
+                    src="${product.image}"
+                    alt="${product.name}"
+                >
+
+
+                <div class="product-info">
+
+                    <h3>
+                        ${product.name}
+                    </h3>
+
+                    <p class="price">
+                        ₹${product.price}
+                    </p>
+
+
+                    <div class="quantity-controls">
+
+                        <button
+                            onclick="decrease(${id})"
+                        >
+                            −
+                        </button>
+
+
+                        <span class="quantity-number">
+                            ${quantity}
+                        </span>
+
+
+                        <button
+                            onclick="increase(${id})"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <a
+                        class="remove"
+                        onclick="removeProduct(${id})"
+                    >
+                        Remove
+                    </a>
+
+                </div>
+
+
+                <div class="item-total">
+
+                    ₹${itemTotal}
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    /*
+     * TOTAL AND BUTTONS
+     */
+
+    html += `
+
+        <div class="grand-total">
+
+            Total: ₹${grandTotal}
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a
+                href="index.html"
+                class="back"
+            >
+                Continue Shopping
+            </a>
+
+
+            <a
+                href="checkout.html"
+                class="back"
+            >
+                Proceed to Checkout
+            </a>
+
+        </div>
+
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+
+/*
+ * LOAD CART WHEN PAGE OPENS
+ */
+
+displayCart();
+
+
+</script>
+
+
+</body>
+
+</html>

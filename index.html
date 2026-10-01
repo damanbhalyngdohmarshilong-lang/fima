@@ -1,0 +1,544 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fima - Online Store</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #111;
+        }
+
+
+        /* HEADER */
+
+        header {
+            background-color: #111;
+            color: white;
+            padding: 20px 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 16px;
+        }
+
+        nav a:hover {
+            color: #ccc;
+        }
+
+
+        /* HERO */
+
+        .hero {
+            text-align: center;
+            padding: 70px 20px;
+            background-color: white;
+        }
+
+        .hero h2 {
+            font-size: 40px;
+            margin: 0 0 15px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #666;
+        }
+
+
+        /* PRODUCTS */
+
+        .products {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .products h2 {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 30px;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+
+        /* PRODUCT CARD */
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.08);
+
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 230px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+
+        /* ADD TO CART BUTTON */
+
+        .add-cart {
+            width: 100%;
+            padding: 12px;
+
+            background-color: #111;
+            color: white;
+
+            border: none;
+            border-radius: 5px;
+
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .add-cart:hover {
+            background-color: #444;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 60px;
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .product-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                padding: 20px;
+            }
+
+            nav a {
+                margin: 0 8px;
+            }
+
+            .hero h2 {
+                font-size: 30px;
+            }
+
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<header>
+
+    <h1>Fima</h1>
+
+    <nav>
+
+        <a href="index.html">
+            Home
+        </a>
+
+       <a href="cart.html">
+    Cart 🛒 (<span id="cart-count">0</span>)
+</a>
+
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <h2>
+        Welcome to Fima
+    </h2>
+
+    <p>
+        Discover our products and shop with us.
+    </p>
+
+</section>
+
+
+
+<!-- PRODUCTS -->
+
+<section class="products" id="products">
+
+    <h2>
+        Our Products
+    </h2>
+
+
+    <div class="product-container">
+
+
+        <!-- PRODUCT 1 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product1.jpg"
+                alt="Product 1"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 1
+                </h3>
+
+                <p class="price">
+                    ₹500
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(1)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 2 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product2.jpg"
+                alt="Product 2"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 2
+                </h3>
+
+                <p class="price">
+                    ₹750
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(2)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 3 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product3.jpg"
+                alt="Product 3"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 3
+                </h3>
+
+                <p class="price">
+                    ₹1000
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(3)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 4 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product4.jpg"
+                alt="Product 4"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 4
+                </h3>
+
+                <p class="price">
+                    ₹600
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(4)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 5 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product5.jpg"
+                alt="Product 5"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 5
+                </h3>
+
+                <p class="price">
+                    ₹850
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(5)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 6 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product6.jpg"
+                alt="Product 6"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 6
+                </h3>
+
+                <p class="price">
+                    ₹900
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(6)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCT 7 -->
+
+        <div class="product-card">
+
+            <img
+                src="images/product7.jpg"
+                alt="Product 7"
+            >
+
+            <div class="product-info">
+
+                <h3>
+                    Product 7
+                </h3>
+
+                <p class="price">
+                    ₹1200
+                </p>
+
+                <button
+                    class="add-cart"
+                    onclick="addToCart(7)"
+                >
+                    Add to Cart
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <p>
+        © 2026 Fima. All rights reserved.
+    </p>
+
+</footer>
+
+
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+    function addToCart(productId) {
+
+        // Get existing cart
+        let cart =
+            JSON.parse(
+                localStorage.getItem("fimaCart")
+            ) || {};
+
+        // Add product
+        if (cart[productId]) {
+
+            cart[productId]++;
+
+        } else {
+
+            cart[productId] = 1;
+
+        }
+
+        // Save cart
+        localStorage.setItem(
+            "fimaCart",
+            JSON.stringify(cart)
+        );
+
+        // Automatically open the cart
+        window.location.href = "cart.html";
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
+```

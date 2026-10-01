@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order Confirmed - Fima</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            color: #111;
+        }
+
+        header {
+            background-color: #111;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        .success {
+            max-width: 650px;
+            margin: 60px auto;
+            background-color: white;
+            padding: 50px 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+
+            margin: 0 auto 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background-color: #111;
+            color: white;
+
+            border-radius: 50%;
+
+            font-size: 45px;
+        }
+
+        .success h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .success p {
+            color: #666;
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .order-details {
+            margin-top: 30px;
+            padding: 20px;
+
+            background-color: #f5f5f5;
+
+            border-radius: 8px;
+
+            text-align: left;
+        }
+
+        .order-details h3 {
+            margin-top: 0;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            padding: 8px 0;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail strong {
+            color: #111;
+        }
+
+        .home-button {
+            display: inline-block;
+
+            margin-top: 25px;
+
+            padding: 12px 25px;
+
+            background-color: #111;
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 5px;
+        }
+
+        .home-button:hover {
+            background-color: #444;
+        }
+
+        .cart-button {
+            display: inline-block;
+
+            margin-top: 25px;
+            margin-left: 10px;
+
+            padding: 12px 25px;
+
+            background-color: #eee;
+            color: #111;
+
+            text-decoration: none;
+
+            border-radius: 5px;
+        }
+
+        .cart-button:hover {
+            background-color: #ddd;
+        }
+
+        @media (max-width: 600px) {
+
+            .success {
+                margin: 25px 20px;
+                padding: 35px 20px;
+            }
+
+            .detail {
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .cart-button {
+                margin-left: 0;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        Fima
+    </h1>
+
+    <div style="margin-top: 10px;">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        &nbsp; | &nbsp;
+
+        <a href="cart.html">
+            Cart 🛒
+            (<span id="cart-count">0</span>)
+        </a>
+
+        &nbsp; | &nbsp;
+
+        <a href="login.html">
+            Login
+        </a>
+
+    </div>
+
+</header>
+
+
+
+<div class="success">
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+
+    <h2>
+        Order Placed Successfully!
+    </h2>
+
+
+    <p>
+        Thank you for shopping with Fima.
+    </p>
+
+
+    <p>
+        Your order has been received and is being processed.
+    </p>
+
+
+    <div
+        class="order-details"
+        id="order-details"
+    >
+
+        <h3>
+            Order Details
+        </h3>
+
+        <div class="detail">
+
+            <strong>
+                Name:
+            </strong>
+
+            <span id="customer-name">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>
+                Phone:
+            </strong>
+
+            <span id="customer-phone">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>
+                City:
+            </strong>
+
+            <span id="customer-city">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>
+                Payment:
+            </strong>
+
+            <span id="payment-method">
+                -
+            </span>
+
+        </div>
+
+
+        <div class="detail">
+
+            <strong>
+                Total:
+            </strong>
+
+            <span>
+                ₹<span id="order-total">0</span>
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <a
+        href="index.html"
+        class="home-button"
+    >
+        Continue Shopping
+    </a>
+
+
+    <a
+        href="cart.html"
+        class="cart-button"
+    >
+        View Cart
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   CART COUNTER
+========================= */
+
+function updateCartCount() {
+
+    const savedCart =
+        localStorage.getItem("fimaCart");
+
+
+    let cart = {};
+
+
+    if (savedCart) {
+
+        try {
+
+            cart = JSON.parse(savedCart);
+
+        } catch (error) {
+
+            cart = {};
+
+        }
+
+    }
+
+
+    let count = 0;
+
+
+    Object.values(cart).forEach(function(quantity) {
+
+        count += Number(quantity);
+
+    });
+
+
+    document.getElementById(
+        "cart-count"
+    ).textContent = count;
+
+}
+
+
+
+/* =========================
+   LOAD ORDER
+========================= */
+
+const savedOrder =
+    localStorage.getItem("fimaOrder");
+
+
+if (savedOrder) {
+
+    try {
+
+        const order =
+            JSON.parse(savedOrder);
+
+
+        document.getElementById(
+            "customer-name"
+        ).textContent =
+            order.name || "-";
+
+
+        document.getElementById(
+            "customer-phone"
+        ).textContent =
+            order.phone || "-";
+
+
+        document.getElementById(
+            "customer-city"
+        ).textContent =
+            order.city || "-";
+
+
+        document.getElementById(
+            "order-total"
+        ).textContent =
+            order.total || "0";
+
+
+        let paymentText =
+            order.payment || "-";
+
+
+        if (paymentText === "cod") {
+
+            paymentText =
+                "Cash on Delivery";
+
+        }
+
+
+        if (paymentText === "online") {
+
+            paymentText =
+                "Online Payment";
+
+        }
+
+
+        document.getElementById(
+            "payment-method"
+        ).textContent =
+            paymentText;
+
+
+    } catch (error) {
+
+        console.log(
+            "Could not load order details."
+        );
+
+    }
+
+}
+
+
+updateCartCount();
+
+
+</script>
+
+
+</body>
+
+</html>
